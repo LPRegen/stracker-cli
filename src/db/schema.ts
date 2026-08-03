@@ -1,10 +1,10 @@
 import { sql } from "drizzle-orm";
 import { integer, sqliteTable, text, index } from "drizzle-orm/sqlite-core";
-import { taskPriorities, taskStatuses } from "../domain/task.constants";
+import { taskPriorities, taskStatuses } from "../domain/task.constants.js";
 
 const now = sql`(strftime('%s', 'now'))`;
 
-export const projects = sqliteTable("projects", {
+export const projectsTable = sqliteTable("projects", {
   id: integer("id").primaryKey({ autoIncrement: true }),
 
   // Business fields
@@ -22,7 +22,7 @@ export const projects = sqliteTable("projects", {
   archivedAt: integer("archived_at", { mode: "timestamp" }),
 });
 
-export const tasks = sqliteTable(
+export const tasksTable = sqliteTable(
   "tasks",
   {
     id: integer("id").primaryKey({ autoIncrement: true }),
@@ -30,7 +30,7 @@ export const tasks = sqliteTable(
     // Relationships
     projectId: integer("project_id")
       .notNull()
-      .references(() => projects.id, { onDelete: "cascade" }),
+      .references(() => projectsTable.id, { onDelete: "cascade" }),
 
     // Business fields
     name: text("name").notNull(),
@@ -63,7 +63,7 @@ export const tasks = sqliteTable(
   (table) => [index("project_idx").on(table.projectId)],
 );
 
-export const sessions = sqliteTable(
+export const sessionsTable = sqliteTable(
   "sessions",
   {
     id: integer("id").primaryKey({ autoIncrement: true }),
@@ -71,7 +71,7 @@ export const sessions = sqliteTable(
     // Relationships
     taskId: integer("task_id")
       .notNull()
-      .references(() => tasks.id, { onDelete: "cascade" }),
+      .references(() => tasksTable.id, { onDelete: "cascade" }),
 
     // Business fields
     comment: text("comment"),
