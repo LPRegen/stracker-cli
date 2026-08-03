@@ -1,6 +1,6 @@
 import { Command, Argument } from "commander";
 import { listProjects } from "../../repositories/project.repository.js";
-import { getEmptyMessage } from "./utils.js";
+import { getEmptyMessage, logProjects } from "./utils.js";
 import type { ListProjectFilter } from "../../domain/project.types.js";
 
 export const listProjectsCommand = new Command("list")
@@ -18,8 +18,5 @@ export const listProjectsCommand = new Command("list")
       return;
     }
 
-    console.log("\x1b[32mProjects:\x1b[0m");
-    for (const project of projects) {
-      console.log(project.name);
-    }
+    logProjects(projects);
   });
