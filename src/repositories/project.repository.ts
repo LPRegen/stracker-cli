@@ -4,7 +4,7 @@ import type {
   CreateProjectInput,
   ListProjectFilter,
 } from "../domain/project.types.js";
-import { isNull, isNotNull } from "drizzle-orm";
+import { isNull, isNotNull, eq, and } from "drizzle-orm";
 
 export async function createProject(input: CreateProjectInput) {
   const [project] = await db
@@ -39,4 +39,22 @@ export async function listProjects(filter: ListProjectFilter) {
     default:
       throw new Error(`Invalid project filter: ${filter}`);
   }
+}
+
+export async function findProjectById(id: number) {
+  const [project] = await db
+    .select({ id: projectsTable.id, name: projectsTable.name })
+    .from(projectsTable)
+    .where(eq(projectsTable.id, id));
+  return project;
+}
+
+export async function archiveProject(id: number) {
+  const [project] = await db
+    .update(projectsTable)
+    .set({ archivedAt: new Date() })
+    .where(and(eq(projectsTable.id, id), isNull(projectsTable.archivedAt)))
+    .returning();
+
+  return project;
 }
