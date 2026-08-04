@@ -58,3 +58,12 @@ export async function archiveProject(id: number) {
 
   return project;
 }
+
+export async function deleteProject(id: number) {
+  const [project] = await db
+    .delete(projectsTable)
+    .where(eq(projectsTable.id, id))
+    .returning();
+
+  return project;
+}
