@@ -25,7 +25,7 @@ export const archiveProjectCommand = new Command("archive")
     const existing = await findProjectById(id);
 
     if (!existing) {
-      console.log(`Project with id "${id}" does not exist`);
+      console.log(`Project with ID "${id}" does not exist`);
       return;
     }
 
