@@ -1,6 +1,7 @@
 import { Command, Argument } from "commander";
 import { listProjects } from "../../repositories/project.repository.js";
-import { getEmptyMessage, logProjects } from "./utils.js";
+import { getEmptyMessage } from "./utils.js";
+import { logProjects } from "./render.js";
 import type { ListProjectFilter } from "../../domain/project.types.js";
 
 export const listProjectsCommand = new Command("list")
