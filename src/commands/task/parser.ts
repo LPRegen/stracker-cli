@@ -1,5 +1,7 @@
 import { InvalidArgumentError } from "commander";
 import type { Priority } from "@/domain/task.types.js";
+import type { TaskStatus } from "@/domain/task.constants.js";
+import { taskStatuses } from "@/domain/task.constants.js";
 
 const priorities = ["low", "medium", "high"] as const;
 
@@ -47,4 +49,14 @@ export const parseEstimate = (value: string): number => {
   }
 
   return total;
+};
+
+export const parseStatus = (value: string): string => {
+  if (!taskStatuses.includes(value as TaskStatus)) {
+    throw new InvalidArgumentError(
+      "Status must be Not started, In progress, Review, Completed or Canceled",
+    );
+  }
+
+  return value as TaskStatus;
 };
