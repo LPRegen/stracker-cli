@@ -1,7 +1,25 @@
 import { db } from "@/db/client.js";
 import { tasksTable } from "@/db/schema.js";
 import type { CreateTaskInput, TaskFilters } from "@/domain/task.types.js";
-import { ne, and, eq } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
+
+export async function findTaskById(id: number) {
+  const [task] = await db
+    .select()
+    .from(tasksTable)
+    .where(eq(tasksTable.id, id));
+
+  return task;
+}
+
+export async function findTasksByName(name: string) {
+  const tasks = await db
+    .select()
+    .from(tasksTable)
+    .where(eq(tasksTable.name, name));
+
+  return tasks;
+}
 
 export async function creatTask({ projectId, name }: CreateTaskInput) {
   const [task] = await db
