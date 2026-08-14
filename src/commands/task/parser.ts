@@ -3,7 +3,7 @@ import type { Priority } from "@/domain/task.types.js";
 import type { TaskStatus } from "@/domain/task.constants.js";
 import { taskStatuses } from "@/domain/task.constants.js";
 
-const priorities = ["low", "medium", "high"] as const;
+const priorities = ["a", "b", "c", "d"] as const;
 
 export const parseProjectId = (id: string): number => {
   const projectId = Number(id);
@@ -15,11 +15,12 @@ export const parseProjectId = (id: string): number => {
 };
 
 export const parsePriority = (value: string): Priority => {
-  if (!priorities.includes(value as Priority)) {
-    throw new InvalidArgumentError("Priority must be low, medium or high");
+  const lowerCase = value.toLowerCase();
+  if (!priorities.includes(lowerCase as Priority)) {
+    throw new InvalidArgumentError("Priority must be a | b | c | d");
   }
 
-  return value as Priority;
+  return lowerCase as Priority;
 };
 
 export const parseDate = (value: string): Date => {
