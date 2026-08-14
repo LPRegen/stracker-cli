@@ -15,11 +15,12 @@ export const parseProjectId = (id: string): number => {
 };
 
 export const parsePriority = (value: string): Priority => {
-  if (!priorities.includes(value as Priority)) {
+  const lowerCase = value.toLowerCase();
+  if (!priorities.includes(lowerCase as Priority)) {
     throw new InvalidArgumentError("Priority must be a | b | c | d");
   }
 
-  return value as Priority;
+  return lowerCase as Priority;
 };
 
 export const parseDate = (value: string): Date => {
