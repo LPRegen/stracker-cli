@@ -8,6 +8,19 @@ import { resolveTask } from "./task.service.js";
 import { getSessionDuration } from "@/domain/session.utils.js";
 import { findTaskById } from "@/repositories/task.repository.js";
 
+/**
+ * Starts a new session for a task.
+ *
+ * Resolves the task using its identifier, verifies that no other session
+ * is currently active, and creates a new session.
+ *
+ * @param taskIdentifier - The task ID or name used to identify the task.
+ * @param comment - An optional comment for the session.
+ * @returns The newly created session.
+ *
+ * @throws {InvalidArgumentError} If the task does not exist.
+ * @throws {InvalidArgumentError} If another session is already active.
+ */
 export async function startSession(taskIdentifier: string, comment?: string) {
   const task = await resolveTask(taskIdentifier);
 
