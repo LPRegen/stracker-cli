@@ -2,6 +2,7 @@ import { Command } from "commander";
 import { projectCommand } from "./commands/project/index.js";
 import { taskCommand } from "./commands/task/index.js";
 import { sessionCommand } from "./commands/session/index.js";
+
 const program = new Command();
 
 program
