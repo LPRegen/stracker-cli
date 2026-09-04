@@ -42,6 +42,14 @@ const sessionFixture: Session = {
   endedAt: null,
 };
 
+const activeSessionFixture: Session = {
+  id: 5,
+  taskId: 8,
+  comment: null,
+  startedAt: new Date(),
+  endedAt: null,
+};
+
 describe("startSession", () => {
   beforeEach(() => {
     vi.clearAllMocks();
@@ -59,16 +67,10 @@ describe("startSession", () => {
   it("throws when there is already an active session", async () => {
     mockedResolveTask.mockResolvedValue(taskFixture);
 
-    mockedFindActiveSession.mockResolvedValue({
-      id: 5,
-      taskId: 8,
-      comment: null,
-      startedAt: new Date(),
-      endedAt: null,
-    });
+    mockedFindActiveSession.mockResolvedValue(activeSessionFixture);
 
     await expect(startSession("4")).rejects.toThrow(
-      "There is already an active session for task #8",
+      `There is already an active session for task #${activeSessionFixture.taskId}`,
     );
 
     expect(createSession).not.toHaveBeenCalled();
@@ -84,7 +86,7 @@ describe("startSession", () => {
     const result = await startSession("4", "testing the CLI");
 
     expect(mockedCreateSession).toHaveBeenCalledWith({
-      taskId: 4,
+      taskId: taskFixture.id,
       comment: "testing the CLI",
     });
 
