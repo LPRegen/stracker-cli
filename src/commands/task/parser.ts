@@ -1,6 +1,5 @@
 import { InvalidArgumentError } from "commander";
-import type { Priority } from "@/domain/task.types.js";
-import type { TaskStatus } from "@/domain/task.constants.js";
+import type { TaskPriority, TaskStatus } from "@/domain/task.constants.js";
 import { taskStatuses } from "@/domain/task.constants.js";
 
 const priorities = ["a", "b", "c", "d"] as const;
@@ -14,13 +13,13 @@ export const parseProjectId = (id: string): number => {
   return projectId;
 };
 
-export const parsePriority = (value: string): Priority => {
+export const parsePriority = (value: string): TaskPriority => {
   const lowerCase = value.toLowerCase();
-  if (!priorities.includes(lowerCase as Priority)) {
-    throw new InvalidArgumentError("Priority must be a | b | c | d");
+  if (!priorities.includes(lowerCase as TaskPriority)) {
+    throw new InvalidArgumentError("Priority must be 'a | b | c | d'");
   }
 
-  return lowerCase as Priority;
+  return lowerCase as TaskPriority;
 };
 
 export const parseDate = (value: string): Date => {
