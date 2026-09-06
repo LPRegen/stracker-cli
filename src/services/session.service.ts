@@ -57,6 +57,7 @@ export async function stopActiveSession() {
 
   const durationMs = getSessionDuration({
     startedAt: stoppedSession.startedAt,
+    // FIX: Type `date | null` is not assignable to type date
     endedAt: stoppedSession.endedAt!,
   });
 

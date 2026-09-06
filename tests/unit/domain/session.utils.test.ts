@@ -21,7 +21,7 @@ describe("formatDuration", () => {
     expect(formatDuration(3 * 60 * 1000 + 5 * 1000)).toBe("0h 3m 5s");
   });
 
-  it("handes zero duration", () => {
+  it("handles zero duration", () => {
     expect(formatDuration(0)).toBe("0h 0m 0s");
   });
 });
