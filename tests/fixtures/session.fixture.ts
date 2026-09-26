@@ -10,7 +10,7 @@ export const sessionFixture: Session = {
 
 export const activeSessionFixture: Session = {
   id: 5,
-  taskId: 8,
+  taskId: 4,
   comment: null,
   startedAt: new Date("2026-09-07T00:00:00.000Z"),
   endedAt: null,
