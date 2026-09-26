@@ -39,12 +39,12 @@ export const tasksTable = sqliteTable(
       enum: taskStatuses,
     })
       .notNull()
-      .default("Not started"),
+      .default("not started"),
     priority: text("priority", {
       enum: taskPriorities,
     })
       .notNull()
-      .default("Medium"),
+      .default("b"),
 
     // Lifecycle
     createdAt: integer("created_at", { mode: "timestamp" })

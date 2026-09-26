@@ -3,7 +3,7 @@ import type { GetSessionDurationInput } from "@/domain/session.types.js";
 /**
  * Function to calculate elapsed time between two dates
  * @param {string} startedAt - Start date
- * @returns { number } Total elapsed time
+ * @returns { number } Total elapsed time in milliseconds
  */
 export function getSessionDuration({
   startedAt,

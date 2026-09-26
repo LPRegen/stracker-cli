@@ -7,6 +7,7 @@ export const startSessionCommand = new Command("start")
   .option("-c, --comment <comment>", "Session comment")
   .action(async (task, { comment }) => {
     await startSession(task, comment);
+    // TODO: Return also the name of the task, e.g. `#5 - Exchange Rates`
     console.log("Task: ", task);
-    console.log("Comment: ", comment);
+    console.log("Comment: ", comment || "-");
   });
