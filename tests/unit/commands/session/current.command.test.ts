@@ -34,6 +34,8 @@ describe("current command", () => {
     );
 
     expect(consoleLog).toHaveBeenNthCalledWith(2, `Elapsed time 0h 1m 35s`);
+
+    consoleLog.mockRestore();
   });
 
   it("throws when there is no active session", async () => {
