@@ -20,3 +20,5 @@ export const stoppedSessionFixture: Session = {
   ...activeSessionFixture,
   endedAt: new Date("2026-09-07T00:00:10.000Z"),
 };
+
+export const deletedSessionFixture: Session = stoppedSessionFixture;
