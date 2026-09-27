@@ -3,6 +3,15 @@ import { sessionsTable } from "@/db/schema.js";
 import type { CreateSessionInput } from "@/domain/session.types.js";
 import { eq, isNull } from "drizzle-orm";
 
+export const findSessionById = async (id: number) => {
+  const [session] = await db
+    .select()
+    .from(sessionsTable)
+    .where(eq(sessionsTable.id, id));
+
+  return session;
+};
+
 export const findActiveSession = async () => {
   const [activeSession] = await db
     .select()
@@ -23,6 +32,15 @@ export const stopSession = async (id: number) => {
   const [session] = await db
     .update(sessionsTable)
     .set({ endedAt: new Date() })
+    .where(eq(sessionsTable.id, id))
+    .returning();
+
+  return session;
+};
+
+export const deleteSession = async (id: number) => {
+  const [session] = await db
+    .delete(sessionsTable)
     .where(eq(sessionsTable.id, id))
     .returning();
 

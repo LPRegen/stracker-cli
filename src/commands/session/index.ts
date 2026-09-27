@@ -2,6 +2,7 @@ import { Command } from "commander";
 import { startSessionCommand } from "./start.js";
 import { currentSessionCommand } from "./current.js";
 import { stopSessionCommand } from "./stop.js";
+import { deleteSessionCommand } from "./delete.js";
 
 export const sessionCommand = new Command("session").description(
   "Manage sessions",
@@ -10,3 +11,4 @@ export const sessionCommand = new Command("session").description(
 sessionCommand.addCommand(startSessionCommand);
 sessionCommand.addCommand(stopSessionCommand);
 sessionCommand.addCommand(currentSessionCommand);
+sessionCommand.addCommand(deleteSessionCommand);

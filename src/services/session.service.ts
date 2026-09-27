@@ -1,6 +1,8 @@
 import {
   createSession,
+  deleteSession as deleteSessionRepository,
   findActiveSession,
+  findSessionById,
   stopSession,
 } from "@/repositories/session.repository.js";
 import { InvalidArgumentError } from "commander";
@@ -92,4 +94,16 @@ export async function currentActiveSession() {
     task,
     durationMs,
   };
+}
+
+export async function deleteSession(id: number) {
+  const session = await findSessionById(id);
+
+  if (!session) {
+    throw new InvalidArgumentError(`There is no session with ID #${id}`);
+  }
+
+  const deletedSession = await deleteSessionRepository(id);
+
+  return deletedSession;
 }
