@@ -2,11 +2,14 @@ import { getSessionDuration } from "@/domain/session.utils.js";
 import {
   createSession,
   findActiveSession,
+  findSessionById,
   stopSession,
+  deleteSession as deleteSessionRepository,
 } from "@/repositories/session.repository.js";
 import { findTaskById } from "@/repositories/task.repository.js";
 import {
   currentActiveSession,
+  deleteSession,
   startSession,
   stopActiveSession,
 } from "@/services/session.service.js";
@@ -15,6 +18,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import { taskFixture } from "../../fixtures/task.fixture.js";
 import {
   activeSessionFixture,
+  deletedSessionFixture,
   sessionFixture,
   stoppedSessionFixture,
 } from "../../fixtures/session.fixture.js";
@@ -32,6 +36,8 @@ vi.mock("@/repositories/session.repository.js", () => ({
   createSession: vi.fn(),
   findActiveSession: vi.fn(),
   stopSession: vi.fn(),
+  deleteSession: vi.fn(),
+  findSessionById: vi.fn(),
 }));
 
 // Services
@@ -45,6 +51,8 @@ const mockedCreateSession = vi.mocked(createSession);
 const mockedFindTaskById = vi.mocked(findTaskById);
 const mockedGetSessionDuration = vi.mocked(getSessionDuration);
 const mockedStopSession = vi.mocked(stopSession);
+const mockedDeleteSessionRepository = vi.mocked(deleteSessionRepository);
+const mockedFindSessionById = vi.mocked(findSessionById);
 
 describe("startSession", () => {
   beforeEach(() => {
@@ -185,5 +193,38 @@ describe("stopActiveSession", () => {
       durationMs: 95800,
       session: stoppedSessionFixture,
     });
+  });
+});
+
+describe("deleteSession", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
+  it("throws if the target session does not exist", async () => {
+    mockedFindSessionById.mockResolvedValue(undefined);
+
+    await expect(deleteSession(89)).rejects.toThrow(
+      "There is no session with ID #89",
+    );
+
+    expect(mockedDeleteSessionRepository).not.toHaveBeenCalled();
+  });
+
+  it("deletes and returns the target session", async () => {
+    mockedFindSessionById.mockResolvedValue(deletedSessionFixture);
+    mockedDeleteSessionRepository.mockResolvedValue(deletedSessionFixture);
+
+    const result = await deleteSession(deletedSessionFixture.id);
+
+    expect(mockedFindSessionById).toHaveBeenCalledWith(
+      deletedSessionFixture.id,
+    );
+
+    expect(mockedDeleteSessionRepository).toHaveBeenCalledWith(
+      deletedSessionFixture.id,
+    );
+
+    expect(result).toEqual(deletedSessionFixture);
   });
 });
