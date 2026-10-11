@@ -4,6 +4,8 @@ import { taskStatuses } from "@/domain/task.constants.js";
 
 const priorities = ["a", "b", "c", "d"] as const;
 
+// TODO:
+// create a generic parser
 export const parseProjectId = (id: string): number => {
   const projectId = Number(id);
   if (!Number.isInteger(projectId) || projectId <= 0) {
