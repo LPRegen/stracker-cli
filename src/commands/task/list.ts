@@ -10,9 +10,9 @@ export const listTasksCommand = new Command("list")
   .option("--priority <priority>", "Filter by priority", parsePriority)
   .action(async ({ projectId, status, priority }) => {
     const tasks = await listTasks({
-      projectId: projectId,
-      status: status,
-      priority: priority,
+      projectId,
+      status,
+      priority,
     });
 
     if (tasks.length === 0) {
