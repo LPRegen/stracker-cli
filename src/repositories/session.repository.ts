@@ -1,7 +1,7 @@
 import { db } from "@/db/client.js";
-import { sessionsTable } from "@/db/schema.js";
+import { sessionsTable, tasksTable } from "@/db/schema.js";
 import type { CreateSessionInput } from "@/domain/session.types.js";
-import { eq, isNull } from "drizzle-orm";
+import { asc, desc, eq, isNull } from "drizzle-orm";
 
 export const findSessionById = async (id: number) => {
   const [session] = await db
@@ -45,4 +45,42 @@ export const deleteSession = async (id: number) => {
     .returning();
 
   return session;
+};
+
+export const listAllSessions = async () => {
+  const sessions = await db.select().from(sessionsTable);
+  return sessions;
+};
+
+export const listSessionsByProjectId = async (id: number) => {
+  const sessions = await db
+    .select({
+      id: sessionsTable.id,
+      taskId: sessionsTable.taskId,
+      comment: sessionsTable.comment,
+      startedAt: sessionsTable.startedAt,
+      endedAt: sessionsTable.endedAt,
+    })
+    .from(sessionsTable)
+    .orderBy(desc(sessionsTable.startedAt))
+    .innerJoin(tasksTable, eq(sessionsTable.taskId, tasksTable.id))
+    .where(eq(tasksTable.projectId, id));
+
+  return sessions;
+};
+
+export const listSessionsByTaskId = async (taskId: number) => {
+  const sessions = await db
+    .select({
+      id: sessionsTable.id,
+      taskId: sessionsTable.taskId,
+      comment: sessionsTable.comment,
+      startedAt: sessionsTable.startedAt,
+      endedAt: sessionsTable.endedAt,
+    })
+    .from(sessionsTable)
+    .orderBy(desc(sessionsTable.startedAt))
+    .where(eq(sessionsTable.taskId, taskId));
+
+  return sessions;
 };

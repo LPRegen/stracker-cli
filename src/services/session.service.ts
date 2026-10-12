@@ -4,6 +4,9 @@ import {
   findActiveSession,
   findSessionById,
   stopSession,
+  listAllSessions as listAllSessionsRepository,
+  listSessionsByProjectId,
+  listSessionsByTaskId,
 } from "@/repositories/session.repository.js";
 import { InvalidArgumentError } from "commander";
 import { resolveTask } from "./task.service.js";
@@ -106,4 +109,28 @@ export async function deleteSession(id: number) {
   const deletedSession = await deleteSessionRepository(id);
 
   return deletedSession;
+}
+
+export async function listSessions({
+  taskId,
+  projectId,
+}: {
+  taskId?: number;
+  projectId?: number;
+}) {
+  if (taskId !== undefined && projectId !== undefined) {
+    throw new InvalidArgumentError(
+      "Specify either a task ID or a project ID, not both.",
+    );
+  }
+
+  if (taskId !== undefined) {
+    return await listSessionsByTaskId(taskId);
+  }
+
+  if (projectId !== undefined) {
+    return await listSessionsByProjectId(projectId);
+  }
+
+  return await listAllSessionsRepository();
 }
