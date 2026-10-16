@@ -17,6 +17,7 @@ export const listSessionsCommand = new Command("list")
   )
   .action(async ({ taskId, projectId }) => {
     const sessions = await listSessions({ taskId, projectId });
+    let totalElapsedTime: number = 0;
 
     const heading =
       taskId !== undefined
@@ -41,9 +42,11 @@ export const listSessionsCommand = new Command("list")
     // TODO:
     // - format dates consistently, remember to replace date with temporal
     sessions.forEach(({ id, comment, startedAt, endedAt }) => {
+      const timeMs = endedAt ? getSessionDuration({ startedAt, endedAt }) : 0;
       const elapsedTime = endedAt
-        ? `Elapsed Time:  ${formatDuration(getSessionDuration({ startedAt, endedAt }))}`
+        ? `Elapsed Time:  ${formatDuration(timeMs)}`
         : "";
+      totalElapsedTime += timeMs;
 
       console.log(`
   #${id}   ${comment ?? "(No comment)"}
@@ -54,5 +57,8 @@ export const listSessionsCommand = new Command("list")
     });
 
     const total = sessions.length;
-    console.log(`Total: ${total} ${total === 1 ? "session" : "sessions"}`);
+    console.log(`
+  Total Sessions:     ${total} ${total === 1 ? "session" : "sessions"}
+  Total Elapsed Time: ${formatDuration(totalElapsedTime)}
+    `);
   });
