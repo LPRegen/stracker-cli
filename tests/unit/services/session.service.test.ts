@@ -5,11 +5,15 @@ import {
   findSessionById,
   stopSession,
   deleteSession as deleteSessionRepository,
+  listAllSessions as listAllSessionsRepository,
+  listSessionsByProjectId,
+  listSessionsByTaskId,
 } from "@/repositories/session.repository.js";
 import { findTaskById } from "@/repositories/task.repository.js";
 import {
   currentActiveSession,
   deleteSession,
+  listSessions,
   startSession,
   stopActiveSession,
 } from "@/services/session.service.js";
@@ -28,19 +32,22 @@ vi.mock("@/domain/session.utils.js", () => ({
   getSessionDuration: vi.fn(),
 }));
 
-// Repositories
+// Repository functions
 vi.mock("@/repositories/task.repository.js", () => ({
   findTaskById: vi.fn(),
 }));
 vi.mock("@/repositories/session.repository.js", () => ({
   createSession: vi.fn(),
   findActiveSession: vi.fn(),
+  findSessionById: vi.fn(),
   stopSession: vi.fn(),
   deleteSession: vi.fn(),
-  findSessionById: vi.fn(),
+  listAllSessions: vi.fn(),
+  listSessionsByProjectId: vi.fn(),
+  listSessionsByTaskId: vi.fn(),
 }));
 
-// Services
+// Service functions
 vi.mock("@/services/task.service.js", () => ({
   resolveTask: vi.fn(),
 }));
@@ -53,6 +60,9 @@ const mockedGetSessionDuration = vi.mocked(getSessionDuration);
 const mockedStopSession = vi.mocked(stopSession);
 const mockedDeleteSessionRepository = vi.mocked(deleteSessionRepository);
 const mockedFindSessionById = vi.mocked(findSessionById);
+const mockedListAllSessionsRepository = vi.mocked(listAllSessionsRepository);
+const mockedListSessionsByProjectId = vi.mocked(listSessionsByProjectId);
+const mockedListSessionsByTaskId = vi.mocked(listSessionsByTaskId);
 
 describe("startSession", () => {
   beforeEach(() => {
@@ -226,5 +236,51 @@ describe("deleteSession", () => {
     );
 
     expect(result).toEqual(deletedSessionFixture);
+  });
+});
+
+describe("listSessions", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
+  it("calls `listSessionsByTaskId()` when `taskId` is provided", async () => {
+    mockedListSessionsByTaskId.mockResolvedValue([sessionFixture]);
+
+    const result = await listSessions({ taskId: 4 });
+
+    expect(mockedListSessionsByTaskId).toHaveBeenCalledWith(
+      sessionFixture.taskId,
+    );
+    expect(mockedListAllSessionsRepository).not.toHaveBeenCalled();
+    expect(mockedListSessionsByProjectId).not.toHaveBeenCalled();
+
+    expect(result).toEqual([sessionFixture]);
+  });
+
+  it("calls `listSessionsByProjectId()` when `projectId` is provided", async () => {
+    mockedListSessionsByProjectId.mockResolvedValue([sessionFixture]);
+
+    const result = await listSessions({ projectId: 4 });
+
+    expect(mockedListSessionsByProjectId).toHaveBeenCalledWith(
+      sessionFixture.taskId,
+    );
+    expect(mockedListSessionsByTaskId).not.toHaveBeenCalled();
+    expect(mockedListAllSessionsRepository).not.toHaveBeenCalled();
+
+    expect(result).toEqual([sessionFixture]);
+  });
+
+  it("calls `listAllSessionsRepository() when no option is provided", async () => {
+    mockedListAllSessionsRepository.mockResolvedValue([sessionFixture]);
+
+    const result = await listSessions({});
+
+    expect(mockedListAllSessionsRepository).toHaveBeenCalled();
+    expect(mockedListSessionsByProjectId).not.toHaveBeenCalled();
+    expect(mockedListSessionsByTaskId).not.toHaveBeenCalled();
+
+    expect(result).toEqual([sessionFixture]);
   });
 });
