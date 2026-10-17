@@ -10,7 +10,7 @@ vi.mock("@/services/session.service.js", () => ({
 
 const mockedDeleteSession = vi.mocked(deleteSession);
 
-describe("delete session command", () => {
+describe("session delete command", () => {
   beforeEach(() => {
     vi.clearAllMocks();
   });
