@@ -1,6 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { listSessionsCommand } from "@/commands/session/list.js";
 import { listSessions } from "@/services/session.service.js";
+import { InvalidArgumentError } from "commander";
 
 vi.mock("@/services/session.service.js", () => ({
   listSessions: vi.fn(),
@@ -52,5 +53,24 @@ describe("session list command", () => {
       taskId: undefined,
       projectId: 2,
     });
+  });
+
+  it("throws when `listSessions()` receives multiple options", async () => {
+    mockedListSessions.mockRejectedValue(
+      new InvalidArgumentError(
+        "Specify either a task ID or a project ID, not both.",
+      ),
+    );
+
+    await expect(
+      listSessionsCommand.parseAsync([
+        "node",
+        "stracker",
+        "--project-id",
+        "2",
+        "--task-id",
+        "4",
+      ]),
+    ).rejects.toThrow("Specify either a task ID or a project ID, not both.");
   });
 });
