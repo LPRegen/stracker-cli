@@ -16,6 +16,8 @@ export const createTaskCommand = new Command("create")
   .option("--estimate <minutes>", "Estimated duration", parseEstimate)
   .option("--due <date>", "Due date", parseDate)
   .action(async (options) => {
+    // TODO:
+    // Log information about task's creation success, or failure
     await creatTask({
       projectId: options.project,
       ...options,
