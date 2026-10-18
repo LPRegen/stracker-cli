@@ -4,6 +4,7 @@ import { currentSessionCommand } from "./current.js";
 import { stopSessionCommand } from "./stop.js";
 import { deleteSessionCommand } from "./delete.js";
 import { listSessionsCommand } from "./list.js";
+import { updateSessionCommand } from "./update.js";
 
 export const sessionCommand = new Command("session").description(
   "Manage sessions",
@@ -14,3 +15,4 @@ sessionCommand.addCommand(stopSessionCommand);
 sessionCommand.addCommand(currentSessionCommand);
 sessionCommand.addCommand(deleteSessionCommand);
 sessionCommand.addCommand(listSessionsCommand);
+sessionCommand.addCommand(updateSessionCommand);

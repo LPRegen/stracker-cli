@@ -8,3 +8,5 @@ export type GetSessionDurationInput = {
   startedAt: NonNullable<Session["startedAt"]>;
   endedAt: NonNullable<Session["endedAt"]>;
 };
+
+export type UpdateSessionInput = typeof sessionsTable.$inferInsert;

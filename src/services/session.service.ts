@@ -7,11 +7,13 @@ import {
   listAllSessions as listAllSessionsRepository,
   listSessionsByProjectId,
   listSessionsByTaskId,
+  updateSession as updateSessionRepository,
 } from "@/repositories/session.repository.js";
 import { InvalidArgumentError } from "commander";
 import { resolveTask } from "./task.service.js";
 import { getSessionDuration } from "@/domain/session.utils.js";
 import { findTaskById } from "@/repositories/task.repository.js";
+import type { UpdateSessionInput } from "@/domain/session.types.js";
 
 /**
  * Starts a new session for a task.
@@ -133,4 +135,34 @@ export async function listSessions({
   }
 
   return await listAllSessionsRepository();
+}
+
+export async function updateSession({
+  sessionId,
+  data,
+}: {
+  sessionId: number;
+  data: UpdateSessionInput;
+}) {
+  const targetSession = await findSessionById(sessionId);
+
+  if (!targetSession) {
+    throw new InvalidArgumentError(
+      `There is no session with specified ID #${sessionId}`,
+    );
+  }
+
+  if (data.taskId) {
+    const targetTask = await findTaskById(data.taskId);
+
+    if (!targetTask) {
+      throw new InvalidArgumentError(
+        `There is no task with specified ID #${data.taskId}`,
+      );
+    }
+  }
+
+  const updatedSession = await updateSessionRepository({ sessionId, data });
+  //
+  // return updatedSession;
 }

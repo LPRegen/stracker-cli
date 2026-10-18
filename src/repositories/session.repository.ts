@@ -1,6 +1,9 @@
 import { db } from "@/db/client.js";
 import { sessionsTable, tasksTable } from "@/db/schema.js";
-import type { CreateSessionInput } from "@/domain/session.types.js";
+import type {
+  CreateSessionInput,
+  UpdateSessionInput,
+} from "@/domain/session.types.js";
 import { asc, desc, eq, isNull } from "drizzle-orm";
 
 export const findSessionById = async (id: number) => {
@@ -83,4 +86,21 @@ export const listSessionsByTaskId = async (taskId: number) => {
     .where(eq(sessionsTable.taskId, taskId));
 
   return sessions;
+};
+
+export const updateSession = async ({
+  sessionId,
+  data,
+}: {
+  sessionId: number;
+  data: UpdateSessionInput;
+}) => {
+  const { taskId, comment, startedAt, endedAt } = data;
+  const [session] = await db
+    .update(sessionsTable)
+    .set({ taskId, comment, startedAt, endedAt })
+    .where(eq(sessionsTable.id, sessionId))
+    .returning();
+
+  return session;
 };
