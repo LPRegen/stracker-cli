@@ -2,6 +2,7 @@ import { Command, InvalidOptionArgumentError } from "commander";
 import { parseInstant, parsePositiveInteger } from "@/utils/parser.js";
 import { updateSession } from "@/services/session.service.js";
 import type { UpdateSessionInput } from "@/domain/session.types.js";
+import { formatDuration, getSessionDuration } from "@/domain/session.utils.js";
 
 export const updateSessionCommand = new Command("update")
   .description("Update a specified session")
@@ -17,6 +18,7 @@ export const updateSessionCommand = new Command("update")
   .option("--clear-comment", `Set session's comment to 'null'`)
   .action(async (sessionId, options) => {
     const { clearComment, ...optionsData } = options;
+
     if (options.comment !== undefined && options.clearComment) {
       throw new InvalidOptionArgumentError(
         "Use either `--comment` or `--clear-comment`, not both.",
@@ -29,5 +31,22 @@ export const updateSessionCommand = new Command("update")
       data.comment = null;
     }
 
-    const targetSession = await updateSession({ sessionId, data });
+    const updatedSession = await updateSession({ sessionId, data });
+
+    if (updatedSession) {
+      const { id, taskId, comment, startedAt, endedAt } = updatedSession;
+      const timeMs = endedAt ? getSessionDuration({ startedAt, endedAt }) : 0;
+
+      const elapsedTime = endedAt ? formatDuration(timeMs) : "still active";
+
+      console.log(`
+  Session updated successfully:
+     Session          #${id}
+     Associated task: #${taskId}
+     Comment:         ${comment ?? "(No comment)"}
+     Started:         ${startedAt}
+     Ended:           ${endedAt}
+     Elapsed time:    ${elapsedTime}
+      `);
+    }
   });

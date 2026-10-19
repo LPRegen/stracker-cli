@@ -163,6 +163,6 @@ export async function updateSession({
   }
 
   const updatedSession = await updateSessionRepository({ sessionId, data });
-  //
-  // return updatedSession;
+
+  return updatedSession;
 }
