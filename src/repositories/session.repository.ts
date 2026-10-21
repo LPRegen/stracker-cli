@@ -4,7 +4,7 @@ import type {
   CreateSessionInput,
   UpdateSessionInput,
 } from "@/domain/session.types.js";
-import { asc, desc, eq, isNull } from "drizzle-orm";
+import { desc, eq, isNull } from "drizzle-orm";
 
 export const findSessionById = async (id: number) => {
   const [session] = await db
