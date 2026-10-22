@@ -6,6 +6,16 @@ export const stopSessionCommand = new Command("stop")
   .description("Stop tracking a session")
   .action(async () => {
     const { session, durationMs } = await stopActiveSession();
-    console.log(`Session for taskId #${session.taskId} stopped`);
-    console.log(`Duration: ${formatDuration(durationMs)}`);
+
+    const { id, taskId, comment, startedAt, endedAt } = session;
+
+    console.log(`
+  Session stoped successfully:
+     Session          #${id}
+     Associated task: #${taskId}
+     Comment:         ${comment ?? "(No comment)"}
+     Started:         ${startedAt}
+     Ended:           ${endedAt}
+     Elapsed time:    ${formatDuration(durationMs)}
+      `);
   });
