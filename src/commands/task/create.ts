@@ -16,10 +16,34 @@ export const createTaskCommand = new Command("create")
   .option("--estimate <minutes>", "Estimated duration", parseEstimate)
   .option("--due <date>", "Due date", parseDate)
   .action(async (options) => {
-    // TODO:
-    // Log information about task's creation success, or failure
-    await creatTask({
+    // FIX:
+    // create service function to orchestrate repo functions
+    const task = await creatTask({
       projectId: options.project,
       ...options,
     });
+
+    if (task) {
+      const {
+        id,
+        name,
+        description,
+        projectId,
+        status,
+        priority,
+        estimatedDurationMinutes,
+        estimatedEndDate,
+      } = task;
+      console.log(`
+  Task created successfully:
+     Task                #${id}
+     Name:                ${name}
+     Associated project: #${projectId}
+     Comment:             ${description ?? "(No description)"}
+     Status:              ${status}
+     Priority:            ${priority}
+     Estimated duration:  ${estimatedDurationMinutes}
+     Estimated end date:  ${estimatedEndDate}
+      `);
+    }
   });
