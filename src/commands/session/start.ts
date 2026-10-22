@@ -13,7 +13,7 @@ export const startSessionCommand = new Command("start")
       const { id, taskId, startedAt } = session;
 
       console.log(`
-  Session created successfully:
+  Session started successfully:
      Session          #${id}
      Associated task: #${taskId}
      Comment:         ${comment ?? "(No comment)"}
