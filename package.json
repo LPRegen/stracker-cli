@@ -12,6 +12,9 @@
   "bin": {
     "stracker": "./dist/src/index.js"
   },
+  "engines": {
+    "node": ">=26"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
