@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 import { Command } from "commander";
 import { projectCommand } from "./commands/project/index.js";
 import { taskCommand } from "./commands/task/index.js";

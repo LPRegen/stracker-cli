@@ -5,16 +5,19 @@
   "type": "module",
   "main": "index.js",
   "scripts": {
-    "build": "tsc",
+    "build": "tsc && tsc-alias",
     "test": "vitest",
     "test:coverage": "vitest run --coverage"
+  },
+  "bin": {
+    "stracker": "./dist/src/index.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "@libsql/client": "^0.18.0",
-    "better-sqlite3": "^13.0.2",
+    "better-sqlite3": "^13.0.3",
     "cli-table3": "^0.6.5",
     "commander": "^15.0.0",
     "dotenv": "^18.0.9",
@@ -25,6 +28,7 @@
     "@types/node": "^26.6.5",
     "@vitest/coverage-v8": "^4.1.10",
     "drizzle-kit": "^1.0.0-rc.5",
+    "tsc-alias": "^1.9.9",
     "tsx": "^4.23.15",
     "typescript": "^7.0.2",
     "vitest": "^4.1.10",
