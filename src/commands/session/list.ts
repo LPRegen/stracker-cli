@@ -39,8 +39,7 @@ export const listSessionsCommand = new Command("list")
 
     console.log(heading);
 
-    // TODO:
-    // - format dates consistently, remember to replace date with temporal
+    // TODO: format dates consistently, remember to replace date with temporal
     sessions.forEach(({ id, comment, startedAt, endedAt }) => {
       const timeMs = endedAt ? getSessionDuration({ startedAt, endedAt }) : 0;
       const elapsedTime = endedAt

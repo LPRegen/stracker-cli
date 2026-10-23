@@ -16,8 +16,7 @@ export const createTaskCommand = new Command("create")
   .option("--estimate <minutes>", "Estimated duration", parseEstimate)
   .option("--due <date>", "Due date", parseDate)
   .action(async (options) => {
-    // FIX:
-    // create service function to orchestrate repo functions
+    // FIX: create service function to orchestrate repo functions
     const task = await creatTask({
       projectId: options.project,
       ...options,

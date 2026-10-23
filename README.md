@@ -36,6 +36,8 @@ CLI app to track work (or just things in general) on projects and tasks, across 
 
 ## Installation
 
+<!-- TODO: Create installation script -->
+
 1. Clone repository
 
 ```
