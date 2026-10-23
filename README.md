@@ -18,7 +18,8 @@
 
 ## Features
 
-CLI app to track work (or just things in general) on projects and tasks, across sessions.
+CLI app to track work (or just things in general) on projects and tasks, across
+sessions.
 
 ## Requirements
 
@@ -38,62 +39,71 @@ CLI app to track work (or just things in general) on projects and tasks, across 
 
 <!-- TODO: Create installation script -->
 
-1. Clone repository
+### Install from source
 
-```
-git clone git@github.com:LPRegen/stracker-cli.git
+Clone the repository and enter the project directory:
+
+```fish
+git clone <repository-url>
 cd session-tracker
 ```
 
-2. Install dependencies
+Run the installation script:
 
-```
-npm install
-```
-
-3. Build application
-
-Compile source code into JS:
-
-```
-npm run build
+```fish
+chmod +x scripts/install.sh
+scripts/install.sh
 ```
 
-The compiled application is generated in the dist/ directory. The build script also rewrites TypeScript path aliases so that the compiled code can run in Node.js.
+The script installs dependencies, builds the application, and creates a symlink
+at `~/.local/bin/stracker` pointing to the compiled entry point.
 
-4. Create system-wide command for current user
+Ensure `~/.local/bin` is in your `PATH`. For Fish, run:
 
-To run `stracker` from any working directory, create a symbolic link to the compiled entry point.
-
-First, ensure that `~/.local/bin` exists:
-
-```
-mkdir -p dist/src/index.js
-```
-
-Make the entry point executable:
-
-```
-chmod +x dist/src/index.js
-```
-
-Create the symbolic link:
-
-```
-ln -s "$(pwd)/dist/src/index.js" ~/.local/bin/stracker
-```
-
-Ensure that `~/.local/bin` is included in your PATH. If you use Fish, you can add it with:
-
-```
+```fish
 fish_add_path ~/.local/bin
 ```
 
-Open a new terminal if necessary, then verify the installation:
+Verify the installation:
 
-```
+```fish
 stracker --help
+stracker project list
 ```
+
+You can run `stracker` from any working directory.
+
+> [!IMPORTANT]
+>
+> The symlink points into your cloned repository. Keep that directory in place;
+> moving or deleting it will break the command.
+
+### Updating
+
+Navigate to the cloned repository, pull the latest changes, and rerun the
+installation script:
+
+```fish
+cd ~/Dokumente/Arbeit/session-tracker
+git pull
+scripts/install.sh
+```
+
+The script reinstalls dependencies, rebuilds the application, and updates the
+symlink to the compiled entry point.
+
+### Uninstalling
+
+Remove the symlink:
+
+```fish
+rm ~/.local/bin/stracker
+```
+
+> [!IMPORTANT]
+>
+> This does not delete the source repository, dependencies, or database.  
+> Remove those separately if no longer needed.
 
 ## Usage
 
