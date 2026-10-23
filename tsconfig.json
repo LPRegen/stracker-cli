@@ -1,5 +1,7 @@
 {
   "compilerOptions": {
+    "rootDir": "./",
+    "outDir": "./dist",
     "paths": {
       "@/*": ["./src/*"]
     },
