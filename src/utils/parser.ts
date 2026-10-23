@@ -11,3 +11,13 @@ export function parsePositiveInteger(value: string): number {
 
   return number;
 }
+
+export function parseInstant(value: string) {
+  try {
+    return Temporal.Instant.from(value);
+  } catch {
+    throw new InvalidArgumentError(
+      `Invalid instant "${value}. Provide an ISO 8601 timestamp with a timezone.`,
+    );
+  }
+}
