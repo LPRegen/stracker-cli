@@ -78,14 +78,14 @@ export async function currentActiveSession() {
   const activeSession = await findActiveSession();
 
   if (!activeSession) {
-    throw new InvalidArgumentError("There is no active session");
+    return null;
   }
 
   const task = await findTaskById(activeSession.taskId);
 
   if (!task) {
-    throw new InvalidArgumentError(
-      `There is no task with ID #${activeSession.taskId}`,
+    throw new Error(
+      `Active session #${activeSession.id} references a nonexistent task #${activeSession.taskId}`,
     );
   }
 
