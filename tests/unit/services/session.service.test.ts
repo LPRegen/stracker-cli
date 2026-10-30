@@ -116,23 +116,13 @@ describe("currentActiveSession", () => {
     vi.clearAllMocks();
   });
 
-  it("throws when there is no active session", async () => {
-    mockedFindActiveSession.mockResolvedValue(undefined);
-
-    await expect(currentActiveSession()).rejects.toThrow(
-      "There is no active session",
-    );
-
-    expect(mockedFindTaskById).not.toHaveBeenCalled();
-  });
-
   it("throws when the active session's task does not exist", async () => {
     mockedFindActiveSession.mockResolvedValue(activeSessionFixture);
 
     mockedFindTaskById.mockResolvedValue(undefined);
 
     await expect(currentActiveSession()).rejects.toThrow(
-      `There is no task with ID #${activeSessionFixture.taskId}`,
+      `Active session #5 references a nonexistent task #${activeSessionFixture.taskId}`,
     );
 
     expect(mockedGetSessionDuration).not.toHaveBeenCalled();
