@@ -43,10 +43,10 @@ export const updateSessionCommand = new Command("update")
   Session updated successfully:
      Session          #${id}
      Associated task: #${taskId}
-     Comment:         ${comment ?? "(No comment)"}
-     Started:         ${startedAt}
-     Ended:           ${endedAt ?? "(Still active)"}
-     Elapsed time:    ${elapsedTime}
+     Comment:          ${comment ?? "(No comment)"}
+     Started:          ${startedAt}
+     Ended:            ${endedAt ?? "(Still active)"}
+     Elapsed time:     ${elapsedTime}
       `);
     }
   });
