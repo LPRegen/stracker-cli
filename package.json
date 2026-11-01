@@ -23,7 +23,6 @@
     "better-sqlite3": "^13.0.3",
     "cli-table3": "^0.6.5",
     "commander": "^15.0.0",
-    "dotenv": "^18.0.9",
     "drizzle-orm": "^1.0.0-rc.5"
   },
   "devDependencies": {
@@ -31,6 +30,7 @@
     "@types/node": "^26.6.5",
     "@vitest/coverage-v8": "^4.1.10",
     "drizzle-kit": "^1.0.0-rc.5",
+    "husky": "^9.1.7",
     "tsc-alias": "^1.9.9",
     "tsx": "^4.23.15",
     "typescript": "^7.0.2",
