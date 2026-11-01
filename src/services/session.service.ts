@@ -52,6 +52,7 @@ export async function startSession(taskIdentifier: string, comment?: string) {
 export async function stopActiveSession() {
   const activeSession = await findActiveSession();
 
+  // TODO: avoid returning an error when there's no session to stop
   if (!activeSession) {
     throw new InvalidArgumentError("There is no active session");
   }
@@ -65,6 +66,7 @@ export async function stopActiveSession() {
   const durationMs = getSessionDuration({
     startedAt: stoppedSession.startedAt,
     // FIX: Type `date | null` is not assignable to type date
+    // Remove non-null assertion operator
     endedAt: stoppedSession.endedAt!,
   });
 
